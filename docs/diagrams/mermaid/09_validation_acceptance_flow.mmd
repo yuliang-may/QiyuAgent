@@ -1,0 +1,13 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'Microsoft YaHei', 'lineColor': '#5F3523' }}}%%
+flowchart TD
+    A[代码与内容变更] --> B[Python 语法检查 / JS 语法检查]
+    B --> C[Web 与回归单测]
+    C --> D[产品相关测试集]
+    D --> E[真实 LLM 冒烟]
+    E --> F[Docker build]
+    F --> G[Docker run]
+    G --> H[页面与主流程验收]
+    H --> I{通过?}
+    I -->|是| J[进入报告与交付材料]
+    I -->|否| K[修复问题后重跑]
+    K --> B

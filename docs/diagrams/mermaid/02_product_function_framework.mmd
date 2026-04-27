@@ -1,0 +1,46 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'Microsoft YaHei', 'primaryColor': '#F3EBE0', 'primaryTextColor': '#241510', 'primaryBorderColor': '#7F2315', 'lineColor': '#5F3523' }}}%%
+flowchart TD
+    Login[登录 / 注册]
+    Chat[通用漆艺助手<br/>默认入口]
+
+    subgraph Sidebar["左侧功能栏"]
+        SChat[聊天]
+        SK[漆艺知识问答]
+        ST[工艺故障诊断]
+        SL[个性化学习路径]
+        SP[可执行工艺计划]
+        SS[安全护栏检查]
+        SH[账户首页]
+    end
+
+    subgraph Main["主工作区"]
+        Conversation[聊天会话记录]
+        Composer[消息输入框]
+        Launcher[模块线程创建面板]
+    end
+
+    subgraph Inspector["右侧 Inspector"]
+        Memory[账户记忆]
+        Evidence[知识参考片段]
+        Result[教学结果 / 执行结果]
+        Attach[附件与执行记录]
+    end
+
+    subgraph Home["首页次级视图"]
+        Stats[统计概览]
+        Pref[稳定偏好]
+        Playbook[历史流程]
+        Threads[最近线程]
+    end
+
+    Login --> Chat
+    Chat --> Sidebar
+    Sidebar --> Conversation
+    Sidebar --> Launcher
+    Sidebar --> Home
+    Conversation --> Composer
+    Conversation --> Inspector
+    Launcher --> Result
+    Memory --> Result
+    Evidence --> Result
+    Attach --> Result

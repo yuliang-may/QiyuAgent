@@ -1,0 +1,17 @@
+.git
+.omx
+.pytest_cache
+.pytest-tmp
+.tmp
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+frontend/node_modules
+frontend/dist
+output
+output_check
+output_check_v2
+lacquertutor_web.db
+.data

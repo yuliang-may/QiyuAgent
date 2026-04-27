@@ -1,0 +1,24 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'Microsoft YaHei', 'primaryColor': '#F5EDE3', 'primaryTextColor': '#241510', 'primaryBorderColor': '#7F2315', 'lineColor': '#5F3523' }}}%%
+flowchart TD
+    A[用户打开系统] --> B[登录 / 注册]
+    B --> C[默认进入聊天工作台]
+    C --> D{直接聊天<br/>还是切模块?}
+
+    D -->|继续聊天| E[创建或恢复 chat 线程]
+    E --> F[通用漆艺助手回复]
+    F --> G{需要专项处理?}
+    G -->|否| E
+    G -->|是| H[从左侧切到功能模块]
+
+    D -->|切模块| H
+    H --> I[创建新的模块线程]
+    I --> J{线程类型}
+    J -->|knowledge / learning / safety| K[生成 artifact 教学结果]
+    J -->|planning / troubleshooting| L[进入追问 / 生成 contract]
+
+    K --> M[查看知识片段 / 记忆 / 导出]
+    L --> N[推进步骤 / 检查点 / 上传附件]
+    N --> O[更新执行状态]
+    O --> P[导出 / 恢复线程]
+    M --> P
+    P --> Q[返回聊天或首页]

@@ -1,0 +1,16 @@
+services:
+  lacquertutor-web:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      LACQUERTUTOR_SESSION_DB_PATH: /app/data/lacquertutor_web.db
+      LACQUERTUTOR_MEM0_DATA_DIR: /app/data/mem0
+    volumes:
+      - lacquertutor_data:/app/data
+    restart: unless-stopped
+
+volumes:
+  lacquertutor_data:

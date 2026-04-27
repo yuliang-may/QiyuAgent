@@ -1,0 +1,19 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'Microsoft YaHei' }}}%%
+stateDiagram-v2
+    [*] --> ActiveChat: 创建 chat 线程
+    [*] --> ActiveWorkflow: 创建 planning / troubleshooting 线程
+    [*] --> Completed: 创建 knowledge / learning / safety artifact 线程
+
+    ActiveChat --> ActiveChat: /messages 多轮对话
+    ActiveChat --> Completed: 导出对话记录
+
+    ActiveWorkflow --> ActiveWorkflow: 继续追问
+    ActiveWorkflow --> Planned: 生成 contract
+    Planned --> ExecutionInProgress: 步骤开始 / 检查点确认
+    ExecutionInProgress --> ExecutionInProgress: 持续推进 / 上传附件
+    ExecutionInProgress --> Blocked: 步骤 blocked / 检查点 failed
+    Blocked --> ExecutionInProgress: 重置后继续
+    ExecutionInProgress --> Completed: 全部步骤 done 且检查点通过
+    Planned --> Completed: 直接导出方案
+
+    Completed --> Completed: 恢复查看 / 导出

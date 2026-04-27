@@ -1,0 +1,58 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.pytest-tmp/
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+frontend/vite.log
+
+# Generated frontend bundle
+src/lacquertutor/web/dist/
+
+# Local data and runtime state
+.data/
+benchmark/
+kb/
+*.db
+*.sqlite
+*.sqlite3
+output/
+output_check/
+output_check_v2/
+tmp_review_extract/
+.tmp/
+
+# Local tool state
+.omx/
+.omx/state/
+.omx/logs/
+.playwright-mcp/
+.superpowers/
+.claude/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# LaTeX build auxiliaries
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz

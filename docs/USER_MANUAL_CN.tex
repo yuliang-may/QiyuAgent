@@ -1,0 +1,350 @@
+\documentclass[UTF8,a4paper,12pt]{ctexart}
+
+\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue
+}
+
+\lstdefinestyle{manualcode}{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  columns=fullflexible,
+  keepspaces=true
+}
+\lstset{style=manualcode}
+
+\title{LacquerTutor 漆艺教学智能助手使用手册}
+\author{LacquerTutor Project}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{产品简介}
+
+LacquerTutor 是一个面向漆艺教学、工艺计划、故障排查和安全评估的 Web 工具。系统通过对话收集关键工艺条件，在必要时主动追问，并基于知识库生成可执行方案、检查点和应急预案。
+
+它适合以下场景：
+
+\begin{itemize}[leftmargin=2em]
+  \item 学生在漆艺学习中咨询材料、步骤、排障和安全问题。
+  \item 教师或助教希望把常见问题转化为可复用的指导流程。
+  \item 工作坊需要记录一次作品制作过程中的步骤、检查点和现场图片。
+\end{itemize}
+
+系统的核心原则是：先确认关键条件，再给出行动建议；遇到不可逆或高风险操作时，先做安全门控。
+
+\section{访问系统}
+
+\subsection{本地访问地址}
+
+如果管理员使用 Docker 或后端生产方式启动系统，默认访问地址为：
+
+\begin{lstlisting}
+http://localhost:8000
+\end{lstlisting}
+
+如果是前后端分离开发模式，前端通常运行在：
+
+\begin{lstlisting}
+http://localhost:5173
+\end{lstlisting}
+
+\subsection{浏览器要求}
+
+建议使用较新的 Chrome、Edge、Firefox 或 Safari。系统需要浏览器支持 Cookie，因为登录状态通过安全 Cookie 保存。
+
+\section{账号注册与登录}
+
+\subsection{注册账号}
+
+\begin{enumerate}[leftmargin=2em]
+  \item 打开系统首页。
+  \item 进入登录页后选择“注册”。
+  \item 输入用户名、显示名称和密码。
+  \item 点击“注册并进入”。
+\end{enumerate}
+
+用户名长度需要满足系统限制，密码至少 8 位。注册成功后系统会自动登录。
+
+\subsection{登录账号}
+
+\begin{enumerate}[leftmargin=2em]
+  \item 打开系统首页。
+  \item 在登录页选择“登录”。
+  \item 输入用户名和密码。
+  \item 点击“登录”。
+\end{enumerate}
+
+\subsection{退出登录}
+
+在左侧栏或页面中的退出入口点击退出。退出后，当前浏览器会话不再保留登录状态。
+
+\section{首页功能}
+
+登录后进入首页。首页提供多个任务入口，并展示近期会话和记忆摘要。
+
+\subsection{场景入口}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3cm}>{\raggedright\arraybackslash}p{10cm}}
+\hline
+\textbf{入口} & \textbf{适用情况} \\
+\hline
+通用对话 & 询问漆艺概念、材料、基础知识或普通问题。 \\
+工艺计划 & 已有作品目标，需要系统生成分步骤工艺计划。 \\
+故障排查 & 已经出现发白、不干、不亮、开裂等问题，需要定位原因。 \\
+知识问答 & 希望基于知识库获得更有依据的解释。 \\
+学习路径 & 希望按当前水平获得阶段化练习安排。 \\
+安全评估 & 准备执行重涂、固化、打磨等关键操作前，先判断风险。 \\
+\hline
+\end{longtable}
+
+\subsection{填写启动信息}
+
+不同入口会显示不同的输入项，常见字段包括：
+
+\begin{itemize}[leftmargin=2em]
+  \item 对象或主题：例如木盒、木托盘、生漆入门、底胎处理。
+  \item 目标或现象：例如希望得到半光黑漆面，或当前表面发白发雾。
+  \item 已知信息：例如当前湿度偏高、上一层施工时间、材料体系不确定。
+  \item 引导方式：可选择智能引导或严格工作流。
+\end{itemize}
+
+建议尽量写清楚材料、环境、当前阶段和已经做过的操作。信息越完整，系统越容易给出可执行建议。
+
+\section{会话工作台}
+
+创建任务后会进入会话工作台。工作台主要由左侧会话栏、中间对话区和右侧资料抽屉组成。
+
+\subsection{中间对话区}
+
+中间区域显示用户与系统的对话记录。你可以在底部输入框继续补充信息或回答系统追问。
+
+如果系统认为缺少关键条件，会一次只追问一个更重要的问题。例如：
+
+\begin{itemize}[leftmargin=2em]
+  \item 当前使用的是生漆、腰果漆还是水性木器漆？
+  \item 当前环境温湿度大概是多少？
+  \item 上一层是否已经完全固化？
+\end{itemize}
+
+对于工艺计划、故障排查和安全评估，不建议跳过追问直接执行。追问通常对应后续方案中的安全边界。
+
+\subsection{右侧资料抽屉}
+
+点击“项目资料”可以打开资料抽屉。抽屉中通常包含以下标签页：
+
+\begin{itemize}[leftmargin=2em]
+  \item 合同或方案：展示步骤、参数、时间窗口、检查点和应急预案。
+  \item 证据：展示系统检索到的证据卡或知识片段。
+  \item 门控：展示当前是否存在缺失条件、阻断项或安全提醒。
+  \item 参考：展示知识库引用、记忆偏好和相关上下文。
+\end{itemize}
+
+\subsection{导出会话}
+
+工作台顶部有“导出”入口。点击后会打开当前会话的 Markdown 导出结果，可用于归档、教学记录或后续整理。
+
+\section{执行方案}
+
+当系统生成可执行方案后，右侧资料抽屉会显示步骤和检查点。
+
+\subsection{步骤状态}
+
+每个步骤可以标记为：
+
+\begin{itemize}[leftmargin=2em]
+  \item 进行中：表示正在执行该步骤。
+  \item 已完成：表示该步骤已经完成。
+  \item 阻断：表示现场条件不允许继续，或执行中遇到问题。
+\end{itemize}
+
+如果某一步被标记为阻断，建议先回到对话区说明实际情况，让系统重新判断。
+
+\subsection{检查点状态}
+
+检查点可以标记为：
+
+\begin{itemize}[leftmargin=2em]
+  \item 通过：当前条件满足要求，可以继续后续步骤。
+  \item 未通过：当前条件不满足要求，应暂停并补充说明。
+\end{itemize}
+
+检查点尤其适合用于不可逆操作之前，例如重涂、打磨、封闭、固化后进入下一层等。
+
+\subsection{现场图片上传}
+
+在执行控制区域可以上传现场图片。支持的图片格式包括：
+
+\begin{itemize}[leftmargin=2em]
+  \item JPEG
+  \item PNG
+  \item WebP
+\end{itemize}
+
+上传时可以选择关联对象：
+
+\begin{itemize}[leftmargin=2em]
+  \item 整个会话
+  \item 某个步骤
+  \item 某个检查点
+\end{itemize}
+
+建议在图片备注中写明拍摄时间、光照条件、当前层数和观察到的现象。
+
+\section{推荐使用流程}
+
+\subsection{做一个新作品的工艺计划}
+
+\begin{enumerate}[leftmargin=2em]
+  \item 在首页选择“工艺计划”。
+  \item 填写作品对象，例如“木盒”。
+  \item 填写目标效果，例如“耐用的半光黑漆面”。
+  \item 补充已知条件，例如漆种、室内湿度、是否已有底胎。
+  \item 选择“智能引导”或“严格工作流”。
+  \item 根据系统追问补齐关键条件。
+  \item 查看右侧“方案”中的步骤、检查点和应急预案。
+  \item 执行过程中按步骤更新状态，并在关键节点上传图片。
+\end{enumerate}
+
+\subsection{排查发白或发雾问题}
+
+\begin{enumerate}[leftmargin=2em]
+  \item 在首页选择“故障排查”。
+  \item 在当前阶段中填写作品状态，例如“木托盘已刷两层，正在固化”。
+  \item 在现象中填写“表面发白发雾”。
+  \item 补充湿度、施工时间、上一层是否干透等已知信息。
+  \item 按系统追问回答，不要先自行打磨或重涂。
+  \item 查看门控标签页，确认是否应当停步。
+  \item 根据系统建议选择继续观察、改善环境、做样板测试或返工。
+\end{enumerate}
+
+\subsection{执行前做安全评估}
+
+\begin{enumerate}[leftmargin=2em]
+  \item 在首页选择“安全评估”。
+  \item 写明准备做的关键步骤，例如“旧涂层成分不明，准备直接重涂”。
+  \item 写明已知条件和不确定条件。
+  \item 查看系统给出的可行、有条件可行或暂不可行判断。
+  \item 如果存在阻断项，先补齐条件或做样板验证。
+\end{enumerate}
+
+\section{管理员部署说明}
+
+\subsection{Docker 部署}
+
+管理员可在项目根目录执行：
+
+\begin{lstlisting}
+cp .env.example .env
+docker compose up --build -d
+\end{lstlisting}
+
+Windows PowerShell 可使用：
+
+\begin{lstlisting}
+Copy-Item .env.example .env
+docker compose up --build -d
+\end{lstlisting}
+
+启动后访问：
+
+\begin{lstlisting}
+http://localhost:8000
+\end{lstlisting}
+
+\subsection{必要环境变量}
+
+\begin{longtable}{>{\raggedright\arraybackslash\ttfamily\footnotesize}p{6.4cm}>{\raggedright\arraybackslash}p{6.6cm}}
+\hline
+\normalfont\textbf{变量名} & \textbf{说明} \\
+\hline
+LACQUERTUTOR\_LLM\_BASE\_URL & OpenAI 兼容模型接口地址，例如 DashScope 兼容模式地址。 \\
+LACQUERTUTOR\_LLM\_API\_KEY & 模型 API Key，不能提交到 GitHub。 \\
+LACQUERTUTOR\_LLM\_MODEL & 使用的模型名称，例如 qwen-plus。 \\
+LACQUERTUTOR\_AUTH\_SECRET\_KEY & 登录 Cookie 签名密钥，生产环境必须改成随机长字符串。 \\
+LACQUERTUTOR\_SESSION\_DB\_PATH & 会话 SQLite 数据库路径。 \\
+LACQUERTUTOR\_MEM0\_DATA\_DIR & 本地记忆数据目录。 \\
+\hline
+\end{longtable}
+
+\subsection{健康检查}
+
+部署后可访问：
+
+\begin{lstlisting}
+http://localhost:8000/health
+\end{lstlisting}
+
+正常结果为：
+
+\begin{lstlisting}
+{"status":"ok"}
+\end{lstlisting}
+
+\subsection{数据持久化}
+
+Docker Compose 配置会把数据保存到 named volume：
+
+\begin{lstlisting}
+lacquertutor_data
+\end{lstlisting}
+
+其中包括会话数据库、本地记忆数据和相关运行数据。更新镜像时停止并重新启动服务，不会自动删除该 volume。
+
+\section{GitHub 上传注意事项}
+
+上传到 GitHub 前，请确认不要提交以下内容：
+
+\begin{itemize}[leftmargin=2em]
+  \item \texttt{.env}
+  \item \texttt{.venv/}
+  \item \texttt{frontend/node\_modules/}
+  \item \texttt{.data/}
+  \item \texttt{lacquertutor\_web.db}
+  \item 本地临时输出目录和缓存目录
+\end{itemize}
+
+建议只提交源码、配置示例、知识库、测试、README 和本使用手册。
+
+\section{常见问题}
+
+\subsection{为什么系统一直追问，不直接给方案？}
+
+漆艺任务中很多条件会影响可行性，例如漆种、湿度、层厚、固化状态和前序工艺。系统追问是为了避免在关键条件缺失时给出不可靠建议。
+
+\subsection{什么时候应该选择严格工作流？}
+
+当任务涉及不可逆操作或安全风险时，建议选择严格工作流。例如重涂、打磨、固化失败处理、旧涂层覆盖和化学材料不确定的情况。
+
+\subsection{系统给出的方案可以直接照做吗？}
+
+不建议无条件照做。应先查看检查点、安全门控和证据说明。对于正式作品，建议先做样板验证。
+
+\subsection{为什么要上传现场图片？}
+
+现场图片可以帮助记录执行状态，也便于教师、助教或后续复盘判断问题是否出在材料、环境、层间处理或操作步骤。
+
+\subsection{API Key 应该放在哪里？}
+
+API Key 应写入服务器上的 \texttt{.env} 文件或部署平台的环境变量中。不要写入代码，也不要提交到 GitHub。
+
+\section{安全提示}
+
+LacquerTutor 的建议用于教学辅助和过程记录，不能替代现场教师、材料供应商说明书或安全规范。涉及过敏、挥发性溶剂、防护装备、通风、废弃物处理等问题时，应优先遵守所在学校、工作室或实验室的安全要求。
+
+\end{document}

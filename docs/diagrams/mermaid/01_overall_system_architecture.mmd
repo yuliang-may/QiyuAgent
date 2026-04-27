@@ -1,0 +1,53 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'Microsoft YaHei', 'primaryColor': '#EDE4D8', 'primaryTextColor': '#241510', 'primaryBorderColor': '#7F2315', 'lineColor': '#5F3523', 'secondaryColor': '#F7F1E8', 'tertiaryColor': '#FFF9F2' }}}%%
+flowchart LR
+    User[教师 / 学生用户]
+    Browser[浏览器前端<br/>默认聊天工作台]
+
+    subgraph Web["Web Product Layer"]
+        UI[聊天工作台<br/>左侧功能栏 + 中间会话区 + 右侧 Inspector]
+        Home[账户首页<br/>统计 / 记忆 / 历史线程]
+    end
+
+    subgraph API["FastAPI 应用层"]
+        Auth[认证与会话管理]
+        SessionAPI[/会话与消息 API/]
+        Export[导出 / 附件 / 执行态 API]
+    end
+
+    subgraph Core["智能体与产品服务层"]
+        Chat[AssistantChatService<br/>通用漆艺助手]
+        Agent[LacquerTutorAgent<br/>planning / troubleshooting]
+        Teach[TeachingAssistantService<br/>knowledge / learning / safety]
+        Memory[SessionMemoryEngine]
+    end
+
+    subgraph Data["数据与记忆层"]
+        SQLite[(SQLite<br/>users / sessions / messages)]
+        Uploads[(附件目录)]
+        Mem0[(Mem0 + 本地 Qdrant)]
+        KB[(5222 段漆艺知识库)]
+    end
+
+    LLM[OpenAI-Compatible LLM API<br/>Qwen / DashScope]
+
+    User --> Browser
+    Browser --> UI
+    UI --> Auth
+    UI --> SessionAPI
+    UI --> Export
+    UI --> Home
+    SessionAPI --> Chat
+    SessionAPI --> Agent
+    SessionAPI --> Teach
+    Chat --> Memory
+    Agent --> Memory
+    Teach --> KB
+    Chat --> KB
+    Memory --> SQLite
+    Memory --> Mem0
+    SessionAPI --> SQLite
+    Export --> SQLite
+    Export --> Uploads
+    Chat --> LLM
+    Agent --> LLM
+    Teach --> LLM

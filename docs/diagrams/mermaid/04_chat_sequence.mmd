@@ -1,0 +1,33 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'Microsoft YaHei' }}}%%
+sequenceDiagram
+    participant U as 用户
+    participant F as 前端工作台
+    participant A as /api/sessions + /messages
+    participant S as SessionStore
+    participant C as AssistantChatService
+    participant M as SessionMemoryEngine / Mem0
+    participant K as Teaching 检索
+    participant L as LLM
+
+    U->>F: 登录后直接输入问题
+    F->>A: POST /api/sessions {scene_key: chat, query}
+    A->>S: create session + 写入 user message
+    A->>C: reply(state, query)
+    C->>M: hydrate_state / search memory
+    C->>K: search(query, limit=4)
+    C->>L: 生成自然语言回复
+    L-->>C: assistant text + suggested scene keys
+    C-->>A: message response
+    A->>S: update context + 写入 assistant message
+    A-->>F: {type: message, text, suggested_scene_keys}
+    F-->>U: 展示聊天结果与模块建议
+
+    U->>F: 继续追问
+    F->>A: POST /api/sessions/{id}/messages
+    A->>S: 追加 user message
+    A->>C: reply(state, follow-up)
+    C->>M: 读取账户记忆
+    C->>K: 补充知识片段
+    C->>L: 结合历史对话生成回复
+    A->>S: 更新会话上下文
+    A-->>F: 多轮聊天结果

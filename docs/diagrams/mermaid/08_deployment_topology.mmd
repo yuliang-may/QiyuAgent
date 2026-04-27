@@ -1,0 +1,25 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'Microsoft YaHei' }}}%%
+flowchart LR
+    Browser[浏览器]
+
+    subgraph Host["宿主机 / Docker"]
+        subgraph Container["lacquertutor-web 容器"]
+            App[FastAPI + 前端静态资源]
+            Runtime[Chat / Agent / Teaching 服务]
+        end
+
+        subgraph Volume["数据卷 /app/data"]
+            DB[(lacquertutor_web.db)]
+            Upload[(uploads)]
+            Mem[(mem0 / qdrant)]
+        end
+    end
+
+    External[外部 LLM API<br/>DashScope / OpenAI-Compatible]
+
+    Browser --> App
+    App --> Runtime
+    Runtime --> DB
+    Runtime --> Upload
+    Runtime --> Mem
+    Runtime --> External

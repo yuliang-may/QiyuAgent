@@ -1,0 +1,40 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'fontFamily': 'Microsoft YaHei', 'lineColor': '#5F3523' }}}%%
+flowchart LR
+    Input[用户输入]
+    Frontend[聊天工作台 / 模块工作台]
+    API[FastAPI 路由层]
+    Session[(sessions.context_json)]
+    Messages[(messages)]
+    Memory[SessionMemoryEngine]
+    Mem0[(Mem0)]
+    KB[(5222 段知识库)]
+    Chat[AssistantChatService]
+    Teach[TeachingAssistantService]
+    Agent[LacquerTutorAgent]
+    LLM[LLM]
+    Output[聊天消息 / artifact / contract]
+    Export[Markdown 导出]
+
+    Input --> Frontend
+    Frontend --> API
+    API --> Session
+    API --> Messages
+    API --> Chat
+    API --> Teach
+    API --> Agent
+    Chat --> Memory
+    Agent --> Memory
+    Memory --> Mem0
+    Chat --> KB
+    Teach --> KB
+    Agent --> KB
+    Chat --> LLM
+    Teach --> LLM
+    Agent --> LLM
+    Chat --> Output
+    Teach --> Output
+    Agent --> Output
+    Output --> Frontend
+    Output --> Export
+    Session --> Export
+    Messages --> Export
